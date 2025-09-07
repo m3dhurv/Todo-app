@@ -15,7 +15,7 @@ function App() {
     e.preventDefault();
     if (!newTodo.trim()) return;
     try {
-      const response = await axios.post("todo-app-backend-xi-six.vercel.app/api/todos", { text: newTodo });
+      const response = await axios.post("https://todo-app-backend-xi-six.vercel.app/api/todos", { text: newTodo });
       setTodos([...todos, response.data]);
       setNewTodo("");
     } catch (error) {
@@ -25,7 +25,7 @@ function App() {
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get("todo-app-backend-xi-six.vercel.app/api/todos");
+      const response = await axios.get("https://todo-app-backend-xi-six.vercel.app/api/todos");
       console.log(response.data);
       setTodos(response.data);
     } catch (error) {
@@ -44,7 +44,7 @@ function App() {
 
   const saveEdit = async (id) => {
     try {
-      const response = await axios.patch(`todo-app-backend-xi-six.vercel.app/api/todos/${id}`, {
+      const response = await axios.patch(`https://todo-app-backend-xi-six.vercel.app/api/todos/${id}`, {
         text: editedText,
       });
       setTodos(todos.map((todo) => (todo._id === id ? response.data : todo)));
@@ -56,7 +56,7 @@ function App() {
 
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(`/api/todos/${id}`);
+      await axios.delete(`https://todo-app-backend-xi-six.vercel.app/api/todos/${id}`);
       setTodos(todos.filter((todo) => todo._id !== id));
     } catch (error) {
       console.log("Error deleting todo:", error);
@@ -66,7 +66,7 @@ function App() {
   const toggleTodo = async (id) => {
     try {
       const todo = todos.find((t) => t._id === id);
-      const response = await axios.patch(`todo-app-backend-xi-six.vercel.app/api/todos/${id}`, {
+      const response = await axios.patch(`https://todo-app-backend-xi-six.vercel.app/api/todos/${id}`, {
         completed: !todo.completed,
       });
       setTodos(todos.map((t) => (t._id === id ? response.data : t)));
