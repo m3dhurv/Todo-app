@@ -24,7 +24,10 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(PORT, () => {
-  connectDB();
-  console.log("Server started at http://localhost:5000");
-});
+// app.listen(PORT, () => {
+//   connectDB();
+//   console.log("Server started at http://localhost:5000");
+// });
+
+
+export default app;
