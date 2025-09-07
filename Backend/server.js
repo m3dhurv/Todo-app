@@ -6,19 +6,24 @@ import cors from "cors";
 import path from "path";
 
 dotenv.config();
-const app = express();
-const PORT = process.env.PORT || 5000;
 
-// ✅ Allow frontend origin explicitly
-app.use(cors({
-  origin: "https://todo-app-frontend-eta-one.vercel.app", 
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-}));
+const app = express();
+
+// Connect DB immediately when server starts
+connectDB();
 
 app.use(express.json());
+
+// ✅ Allow frontend domain
+app.use(cors({
+  origin: ["https://todo-app-frontend-eta-one.vercel.app"], 
+  methods: ["GET", "POST", "PATCH", "DELETE"],
+  credentials: true
+}));
+
 app.use("/api/todos", todoRoutes);
 
+// Serve frontend in production
 const __dirname = path.resolve();
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
