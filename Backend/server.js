@@ -21,6 +21,10 @@ app.use(cors({
   credentials: true
 }));
 
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
+});
+
 app.use("/api/todos", todoRoutes);
 
 // Serve frontend in production
@@ -31,5 +35,7 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
   });
 }
+
+
 
 export default app;
