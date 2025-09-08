@@ -17,7 +17,7 @@ connectDB();
 app.use(
   cors({
     origin: [
-      "https://todo-app-frontend-eta-one.vercel.app", // deployed frontend
+      "https://todo-app-frontend-eta-one.vercel.app",
       "http://localhost:5173", // local frontend
     ],
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
@@ -25,6 +25,10 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(cors({
+  origin: "*"
+}));
 
 // ✅ Express JSON
 app.use(express.json());
