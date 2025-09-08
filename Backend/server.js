@@ -10,14 +10,14 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Connect DB
+// ✅ Connect to MongoDB
 connectDB();
 
-// ✅ CORS middleware sabse upar lagao
+// ✅ CORS middleware
 app.use(
   cors({
     origin: [
-      "https://todo-app-frontend-eta-one.vercel.app",
+      "https://todo-app-frontend-eta-one.vercel.app", // frontend deployed
       "http://localhost:5173", // local frontend
     ],
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
@@ -26,20 +26,16 @@ app.use(
   })
 );
 
-app.use(cors({
-  origin: "*"
-}));
-
-// ✅ Express JSON
+// ✅ Express JSON parser
 app.use(express.json());
 
 // ✅ API routes
 app.use("/api/todos", todoRoutes);
 
-// ✅ Test route (CORS check)
+// ✅ Test route (for CORS and deployment check)
 app.get("/api/test", (req, res) => {
   res.json({
-    message: "✅ CORS is working fine!",
+    message: "✅ CORS and backend are working fine!",
     time: new Date().toISOString(),
   });
 });
@@ -62,4 +58,5 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
+// ✅ Export app for serverless deployment on Vercel
 export default app;
