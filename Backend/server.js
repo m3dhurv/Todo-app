@@ -1,24 +1,24 @@
 import express from "express";
 import dotenv from "dotenv";
-import todoRoutes from "./routes/todo.route.js";
-import { connectDB } from "./config/db.js";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import todoRoutes from "./routes/todo.route.js";
+import { connectDB } from "./config/db.js";
 
 dotenv.config();
 
 const app = express();
 
-// ✅ Connect to MongoDB
+// ✅ Connect MongoDB
 connectDB();
 
-// ✅ CORS middleware
+// ✅ CORS setup (frontend + localhost)
 app.use(
   cors({
     origin: [
-      "https://todo-app-frontend-eta-one.vercel.app", // frontend deployed
-      "http://localhost:5173", // local frontend
+      "https://todo-app-frontend-eta-one.vercel.app",
+      "http://localhost:5173",
     ],
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -26,21 +26,24 @@ app.use(
   })
 );
 
-// ✅ Express JSON parser
+// ✅ Express JSON middleware
 app.use(express.json());
 
 // ✅ API routes
 app.use("/api/todos", todoRoutes);
 
-// ✅ Test route (for CORS and deployment check)
+// ✅ Favicon handling
+app.get("/favicon.ico", (req, res) => res.status(204).end());
+
+// ✅ Test route for CORS check
 app.get("/api/test", (req, res) => {
   res.json({
-    message: "✅ CORS and backend are working fine!",
+    message: "✅ CORS is working fine!",
     time: new Date().toISOString(),
   });
 });
 
-// ✅ Root check route
+// ✅ Root route
 app.get("/", (req, res) => {
   res.send("✅ Backend is running 🚀");
 });
@@ -50,7 +53,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "/frontend/dist");
+  const frontendPath = path.join(__dirname, "frontend/dist");
   app.use(express.static(frontendPath));
 
   app.get("*", (req, res) => {
@@ -58,5 +61,5 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-// ✅ Export app for serverless deployment on Vercel
+// ✅ Export app for Vercel serverless
 export default app;
