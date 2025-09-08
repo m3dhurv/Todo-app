@@ -6,7 +6,7 @@ import { FaTrash } from "react-icons/fa6";
 import axios from "axios";
 
 // ✅ Set base URL for backend once
-axios.defaults.baseURL = "https://todo-app-backend-xi-six.vercel.app";
+axios.defaults.baseURL = "https://todo-app-backend-gilt.vercel.app/";
 
 function App() {
   const [newTodo, setNewTodo] = useState("");
