@@ -10,33 +10,42 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Connect to DB
+// ✅ Connect DB
 connectDB();
 
-// ✅ Middleware
-app.use(express.json());
-
-// ✅ Allow frontend domain (CORS)
+// ✅ CORS middleware sabse upar lagao
 app.use(
   cors({
     origin: [
       "https://todo-app-frontend-eta-one.vercel.app", // deployed frontend
-      "http://localhost:5173", // local dev frontend
+      "http://localhost:5173", // local frontend
     ],
-    methods: ["GET", "POST", "PATCH", "DELETE"],
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
-// ✅ API route
+// ✅ Express JSON
+app.use(express.json());
+
+// ✅ API routes
 app.use("/api/todos", todoRoutes);
+
+// ✅ Test route (CORS check)
+app.get("/api/test", (req, res) => {
+  res.json({
+    message: "✅ CORS is working fine!",
+    time: new Date().toISOString(),
+  });
+});
 
 // ✅ Root check route
 app.get("/", (req, res) => {
   res.send("✅ Backend is running 🚀");
 });
 
-// ✅ Handle production frontend
+// ✅ Serve frontend in production
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
